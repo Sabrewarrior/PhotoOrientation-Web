@@ -6,7 +6,6 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from backend.serializers import UserSerializer, GroupSerializer
 
-print(os.getcwd() + "\\views.py")
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response

@@ -1,0 +1,1 @@
+[{"model": "snippets.database", "pk": 0, "fields": {"name": "SUN397", "correct": false}}, {"model": "snippets.database", "pk": 1, "fields": {"name": "SUN397", "correct": true}}, {"model": "snippets.database", "pk": 2, "fields": {"name": "CorelDB", "correct": false}}, {"model": "snippets.database", "pk": 3, "fields": {"name": "CorelDB", "correct": true}}]

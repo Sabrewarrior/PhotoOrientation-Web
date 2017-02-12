@@ -2,9 +2,11 @@
  * Created by Gatsby on 2/11/2017.
  */
 app.controller('myCtrl', function($scope, $http) {
-    $scope.orders = ["alphabet", "lament"];
-
-
+    $rootScope.$on('keypress', function (e, a, key) {
+        $scope.$apply(function () {
+            $scope.key_code = key;
+        });
+    })
 
     $scope.range = function(min, max, step) {
         step = step || 1;
@@ -20,24 +22,67 @@ app.controller('myCtrl', function($scope, $http) {
         return input;
     };
 
-    $scope.myImage = function(){
-        var i = 0;
-        if (i == 0) {
-            console.log(0)
-            return "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg";
-        } else {
-            console.log(1)
-            return "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg";
-        }
+    $scope.nextPage = function(page){
+        $scope.image_page = page + 1;
+        $http({
+            method: 'GET',
+            url: urlfield+ 'db/' + database + '/' +  $scope.orderSelection + '/' + $scope.image_page + '/'
+        }).then(function successCallback(response) {
+            datatoarray($scope, response.data);
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response)
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+
+    };
+
+    $scope.prevPage = function(page){
+        $scope.image_page = page - 1;
+        $http({
+            method: 'GET',
+            url: urlfield+ 'db/' + database + '/' + $scope.orderSelection + '/' + $scope.image_page + '/'
+        }).then(function successCallback(response) {
+            datatoarray($scope, response.data);
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response)
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+
+
+    };
+    var datatoarray = function(scope, data){
+        for (var i = 0; i < data.length; i++) {
+            scope.imageUrlArray[(i*4)] = 'images/gd1' + data[i]['url_orig'];
+            scope.imageUrlArray[(i*4)+1] = 'images/gd1' + data[i]['url_pos'];
+            scope.imageUrlArray[(i*4)+2] = 'images/gd1' + data[i]['url_neg'];
+            scope.imageUrlArray[(i*4)+3] = 'images/gd1' + data[i]['url_hot'];
+        };
     }
 
-    $scope.nextPage = function(page, order){
-        $scope.imageUrlArray = ["images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg"];
-        app.directive("imageSource");
-        $scope.image_page = page + 1;
+    var init = function(){
+        $scope.orders = ["correct", "incorrect"];
+        $scope.orderSelection = "incorrect"
+        $scope.image_page = 0;
+        $http({
+            method: 'GET',
+            url: urlfield+ 'db/' + database + '/' +  $scope.orderSelection + '/' + $scope.image_page + '/'
+        }).then(function successCallback(response) {
+            datatoarray($scope, response.data);
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response);
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+
     };
-    $scope.prevPage = function(page, order){
-        $scope.imageUrlArray = ["images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg", "images/photos/sun_aaaulhwrhqgejnyt-orient2.jpg", "images/photos/sun_aaaulhwrhqgejnyt-prob0-orient2-pred2-cw.jpg"]
-        $scope.image_page = page - 1;
-    };
+    var urlfield = 'http://127.0.0.1:8000/'
+    var correctness = 'correct'
+    var database = 'SUN397'
+
+    init();
 });

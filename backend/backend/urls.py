@@ -18,7 +18,7 @@ from rest_framework import routers
 from backend import views
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-print("urls.py")
+
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)

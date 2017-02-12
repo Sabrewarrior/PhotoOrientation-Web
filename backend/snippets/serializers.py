@@ -1,14 +1,14 @@
 from rest_framework import serializers
-from snippets.models import Correct, Incorrect, LANGUAGE_CHOICES, STYLE_CHOICES
+from snippets.models import Database, URLList, LANGUAGE_CHOICES, STYLE_CHOICES
 
 
-class CorrectSerializer(serializers.ModelSerializer):
+class DatabaseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Correct
-        fields = ('url_orig', 'url_pos', 'url_neg', 'url_hot', 'orient', 'pct', 'pred', 'prob')
+        model = Database
+        fields = ('name', 'correct')
 
 
-class IncorrectSerializer(serializers.ModelSerializer):
+class URLListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Incorrect
-        fields = ('url_orig', 'url_pos', 'url_neg', 'url_hot', 'orient', 'pct', 'pred', 'prob')
+        model = URLList
+        fields = ('db', 'url_orig', 'url_pos', 'url_neg', 'url_hot', 'orient', 'pct', 'pred', 'prob')

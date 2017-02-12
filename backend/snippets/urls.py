@@ -2,8 +2,9 @@ from django.conf.urls import url
 from snippets import views
 
 urlpatterns = [
-    url(r'^incorrect/$', views.incorrect_list),
-    url(r'^incorrect/(?P<pk>[0-9]+)/$', views.incorrect_detail),
-    url(r'^correct/$', views.correct_list),
-    url(r'^correct/(?P<pk>[0-9]+)/$', views.correct_detail),
+    url(r'^db/$', views.db_list),
+    url(r'^db/(?P<pk>-?[0-9]+)/$', views.db_detail),
+    url(r'^db/(?P<db>[A-Za-z0-9_-]+)/(?P<ct>incorrect|correct)/$', views.url_list),
+    url(r'^db/(?P<db>[A-Za-z0-9_-]+)/(?P<ct>incorrect|correct)/(?P<page>-?[0-9]+)/$', views.url_list_by_page),
+    url(r'^db/(?P<db>[A-Za-z0-9_-]+)/(?P<ct>incorrect|correct)/(?P<page>-?[0-9]+)/(?P<rows>[0-9]+)/$', views.url_list_by_page),
 ]
